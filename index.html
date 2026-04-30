@@ -1118,19 +1118,29 @@ function submitLead() {
     alert('Veuillez renseigner votre nom et votre email.');
     return;
   }
-  // In production, this would POST to your CRM / backend
-  // For now, show success modal and log the lead
-  const leadData = {
-    name: name,
-    company: document.getElementById('leadCompany').value,
-    email: email,
-    phone: document.getElementById('leadPhone').value,
-    product: document.getElementById('leadProduct').value,
-    calculatedCIF: document.getElementById('cifDisplay').textContent,
-    calculatedTax: document.getElementById('totalTaxDisplay').textContent,
-    timestamp: new Date().toISOString()
-  };
-  console.log('📋 Lead captured:', leadData);
+
+  const company = document.getElementById('leadCompany').value.trim();
+  const phone = document.getElementById('leadPhone').value.trim();
+  const product = document.getElementById('leadProduct').value.trim();
+  const cifVal = document.getElementById('cifDisplay') ? document.getElementById('cifDisplay').textContent : '—';
+  const taxVal = document.getElementById('totalTaxDisplay') ? document.getElementById('totalTaxDisplay').textContent : '—';
+
+  // Build email body
+  const subject = encodeURIComponent('Demande de devis - Calculateur Import Algérie');
+  const body = encodeURIComponent(
+    'Nouvelle demande de devis depuis le calculateur :\n\n' +
+    'Nom : ' + name + '\n' +
+    'Entreprise : ' + (company || 'Non renseigné') + '\n' +
+    'Email : ' + email + '\n' +
+    'Téléphone : ' + (phone || 'Non renseigné') + '\n' +
+    'Produit à importer : ' + (product || 'Non renseigné') + '\n' +
+    'Valeur CIF calculée : ' + cifVal + '\n' +
+    'Total taxes calculées : ' + taxVal + '\n\n' +
+    'Date : ' + new Date().toLocaleString('fr-FR')
+  );
+
+  // Open mailto link
+  window.location.href = 'mailto:izhaoguoxing@gmail.com?subject=' + subject + '&body=' + body;
 
   // Show modal
   const modal = document.getElementById('leadModal');
