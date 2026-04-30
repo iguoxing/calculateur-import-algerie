@@ -1,0 +1,1150 @@
+<!DOCTYPE html>
+<html lang="fr" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Calculateur de Droits et Taxes à l'Importation - Algérie</title>
+<style>
+:root {
+  --primary: #006233;
+  --primary-light: #008847;
+  --primary-dark: #004d28;
+  --accent: #D21034;
+  --accent-light: #e8385a;
+  --gold: #F0C808;
+  --gold-light: #f5d84d;
+  --bg: #f7f9fc;
+  --card: #ffffff;
+  --text: #1a2332;
+  --text-light: #5a6a7e;
+  --border: #e2e8f0;
+  --shadow: 0 2px 12px rgba(0,0,0,0.08);
+  --shadow-lg: 0 8px 32px rgba(0,0,0,0.12);
+  --radius: 12px;
+  --radius-sm: 8px;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+/* Header */
+.header {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+  color: white;
+  padding: 32px 20px 28px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.header::before {
+  content: '';
+  position: absolute;
+  top: -50%; left: -50%;
+  width: 200%; height: 200%;
+  background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, transparent 60%);
+  animation: headerGlow 15s ease-in-out infinite;
+}
+@keyframes headerGlow {
+  0%, 100% { transform: translate(0, 0); }
+  50% { transform: translate(5%, 5%); }
+}
+.header-content { position: relative; z-index: 1; max-width: 800px; margin: 0 auto; }
+.header h1 {
+  font-size: 1.6rem;
+  font-weight: 700;
+  margin-bottom: 6px;
+  letter-spacing: -0.02em;
+}
+.header .subtitle {
+  font-size: 0.95rem;
+  opacity: 0.9;
+  font-weight: 400;
+}
+.header .flag-bar {
+  display: flex;
+  justify-content: center;
+  gap: 4px;
+  margin-bottom: 14px;
+}
+.flag-bar span {
+  display: inline-block;
+  width: 32px; height: 6px;
+  border-radius: 3px;
+}
+.flags-g { background: var(--primary); }
+.flags-w { background: #fff; }
+.flags-r { background: var(--accent); }
+.header .update-badge {
+  display: inline-block;
+  background: rgba(255,255,255,0.18);
+  backdrop-filter: blur(4px);
+  padding: 4px 14px;
+  border-radius: 20px;
+  font-size: 0.78rem;
+  margin-top: 10px;
+  border: 1px solid rgba(255,255,255,0.2);
+}
+
+/* Container */
+.container {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 24px 16px 40px;
+}
+
+/* Cards */
+.card {
+  background: var(--card);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 24px;
+  margin-bottom: 20px;
+  border: 1px solid var(--border);
+  transition: box-shadow 0.2s;
+}
+.card:hover { box-shadow: var(--shadow-lg); }
+.card-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: 18px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--primary);
+}
+.card-title .icon {
+  width: 32px; height: 32px;
+  background: linear-gradient(135deg, var(--primary), var(--primary-light));
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  color: white;
+  font-size: 1rem;
+  flex-shrink: 0;
+}
+
+/* Form */
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.form-group.full { grid-column: 1 / -1; }
+.form-group label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-light);
+}
+.form-group label .required {
+  color: var(--accent);
+  margin-left: 2px;
+}
+.form-group input, .form-group select {
+  padding: 10px 14px;
+  border: 2px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-size: 0.95rem;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  background: #fff;
+  color: var(--text);
+  font-family: inherit;
+}
+.form-group input:focus, .form-group select:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(0,98,51,0.12);
+}
+.form-group input::placeholder { color: #b0b8c4; }
+.form-group .hint {
+  font-size: 0.75rem;
+  color: var(--text-light);
+  font-style: italic;
+}
+
+/* Buttons */
+.btn-row {
+  display: flex;
+  gap: 12px;
+  margin-top: 20px;
+  flex-wrap: wrap;
+}
+.btn {
+  padding: 12px 28px;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: inherit;
+}
+.btn-primary {
+  background: linear-gradient(135deg, var(--primary), var(--primary-light));
+  color: white;
+  flex: 1;
+}
+.btn-primary:hover {
+  background: linear-gradient(135deg, var(--primary-light), var(--primary));
+  transform: translateY(-1px);
+  box-shadow: 0 4px 16px rgba(0,98,51,0.3);
+}
+.btn-secondary {
+  background: var(--bg);
+  color: var(--text-light);
+  border: 2px solid var(--border);
+}
+.btn-secondary:hover {
+  background: #eef0f4;
+}
+
+/* Results */
+.results { display: none; }
+.results.visible { display: block; }
+.result-summary {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 14px;
+  margin-bottom: 20px;
+}
+.summary-item {
+  background: linear-gradient(135deg, var(--primary), var(--primary-light));
+  color: white;
+  padding: 18px 16px;
+  border-radius: var(--radius-sm);
+  text-align: center;
+}
+.summary-item.accent {
+  background: linear-gradient(135deg, var(--accent), var(--accent-light));
+}
+.summary-item.gold {
+  background: linear-gradient(135deg, #c99700, var(--gold));
+  color: var(--text);
+}
+.summary-item .label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  opacity: 0.9;
+  margin-bottom: 6px;
+}
+.summary-item.gold .label { opacity: 0.7; }
+.summary-item .value {
+  font-size: 1.35rem;
+  font-weight: 800;
+}
+.summary-item.gold .value { color: var(--primary-dark); }
+
+/* Breakdown table */
+.breakdown-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+.breakdown-table th {
+  background: #f1f5f9;
+  padding: 10px 14px;
+  text-align: left;
+  font-weight: 600;
+  color: var(--text-light);
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  border-bottom: 2px solid var(--border);
+}
+.breakdown-table td {
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--border);
+}
+.breakdown-table tr:last-child td { border-bottom: none; }
+.breakdown-table tr:hover td { background: #f8fafc; }
+.breakdown-table .tax-name { font-weight: 500; }
+.breakdown-table .tax-base { color: var(--text-light); font-size: 0.83rem; }
+.breakdown-table .tax-rate { text-align: center; font-weight: 600; color: var(--primary); }
+.breakdown-table .tax-amount { text-align: right; font-weight: 700; white-space: nowrap; }
+.breakdown-table .total-row td {
+  font-weight: 800;
+  font-size: 1rem;
+  background: #f0fdf4;
+  border-top: 2px solid var(--primary);
+  color: var(--primary-dark);
+}
+.breakdown-table .total-row .tax-amount { color: var(--accent); font-size: 1.1rem; }
+
+/* Progress bar */
+.tax-bar {
+  margin-top: 16px;
+}
+.tax-bar-label {
+  font-size: 0.8rem;
+  color: var(--text-light);
+  margin-bottom: 6px;
+  font-weight: 500;
+}
+.bar-container {
+  height: 28px;
+  border-radius: 14px;
+  overflow: hidden;
+  display: flex;
+  background: #e2e8f0;
+}
+.bar-segment {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: white;
+  transition: width 0.6s ease;
+  min-width: 0;
+  overflow: hidden;
+}
+.bar-dd { background: var(--primary); }
+.bar-tcs { background: #3b82f6; }
+.bar-tva { background: var(--accent); }
+.bar-daps { background: #8b5cf6; }
+.bar-tdb { background: #f59e0b; color: var(--text); }
+.bar-cif { background: #94a3b8; }
+
+.bar-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 8px;
+  font-size: 0.75rem;
+  color: var(--text-light);
+}
+.bar-legend span {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.bar-legend .dot {
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+/* Pain Points Section */
+.pain-points {
+  background: linear-gradient(135deg, #fef3f2, #fff5f5);
+  border: 1px solid #fecaca;
+}
+.pain-points .card-title { color: var(--accent); }
+.pain-points .card-title .icon {
+  background: linear-gradient(135deg, var(--accent), var(--accent-light));
+}
+.pain-list {
+  list-style: none;
+  display: grid;
+  gap: 12px;
+}
+.pain-list li {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  font-size: 0.88rem;
+  color: var(--text);
+}
+.pain-list li .pain-icon {
+  flex-shrink: 0;
+  width: 24px; height: 24px;
+  background: var(--accent);
+  color: white;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.7rem;
+  font-weight: 700;
+  margin-top: 2px;
+}
+
+/* Tips Section */
+.tips {
+  background: linear-gradient(135deg, #f0fdf4, #ecfdf5);
+  border: 1px solid #bbf7d0;
+}
+.tips .card-title { color: var(--primary-dark); }
+.tips-list {
+  list-style: none;
+  display: grid;
+  gap: 10px;
+}
+.tips-list li {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  font-size: 0.88rem;
+}
+.tips-list li .tip-icon {
+  flex-shrink: 0;
+  width: 24px; height: 24px;
+  background: var(--primary);
+  color: white;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.75rem;
+  margin-top: 2px;
+}
+
+/* CTA Section */
+.cta-card {
+  background: linear-gradient(135deg, var(--gold-light), var(--gold));
+  border: 2px solid #c99700;
+  text-align: center;
+}
+.cta-card .card-title {
+  justify-content: center;
+  color: var(--primary-dark);
+}
+.cta-card .card-title .icon {
+  background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+}
+.cta-card p {
+  margin-bottom: 14px;
+  font-size: 0.92rem;
+  color: var(--text);
+}
+.cta-btn {
+  display: inline-block;
+  padding: 12px 32px;
+  background: var(--primary);
+  color: white;
+  border-radius: var(--radius-sm);
+  font-weight: 700;
+  text-decoration: none;
+  font-size: 0.95rem;
+  transition: all 0.2s;
+}
+.cta-btn:hover {
+  background: var(--primary-dark);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 16px rgba(0,98,51,0.3);
+}
+
+/* Footer */
+.footer {
+  text-align: center;
+  padding: 20px;
+  font-size: 0.78rem;
+  color: var(--text-light);
+  border-top: 1px solid var(--border);
+  background: var(--card);
+}
+.footer a { color: var(--primary); text-decoration: none; }
+
+/* Tooltip */
+.tooltip-trigger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px; height: 18px;
+  border-radius: 50%;
+  background: var(--border);
+  color: var(--text-light);
+  font-size: 0.65rem;
+  font-weight: 700;
+  cursor: help;
+  margin-left: 4px;
+  vertical-align: middle;
+  position: relative;
+}
+.tooltip-trigger:hover::after {
+  content: attr(data-tip);
+  position: absolute;
+  bottom: calc(100% + 6px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--text);
+  color: white;
+  padding: 6px 10px;
+  border-radius: 6px;
+  font-size: 0.72rem;
+  font-weight: 400;
+  white-space: nowrap;
+  z-index: 10;
+  max-width: 260px;
+  white-space: normal;
+  line-height: 1.4;
+}
+
+/* Exchange rate display */
+.rate-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  border-radius: var(--radius-sm);
+  font-size: 0.82rem;
+  color: var(--primary-dark);
+  margin-top: 12px;
+}
+.rate-info .dot-pulse {
+  width: 8px; height: 8px;
+  background: var(--primary);
+  border-radius: 50%;
+  animation: pulse 2s infinite;
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+/* Print */
+@media print {
+  .header { background: var(--primary) !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .btn-row, .cta-card { display: none; }
+  .card { box-shadow: none; border: 1px solid #ccc; break-inside: avoid; }
+}
+
+/* Mobile */
+@media (max-width: 640px) {
+  .form-grid { grid-template-columns: 1fr; }
+  .result-summary { grid-template-columns: 1fr; }
+  .header h1 { font-size: 1.3rem; }
+  .summary-item .value { font-size: 1.1rem; }
+  .container { padding: 16px 12px 32px; }
+  .card { padding: 18px 14px; }
+  .breakdown-table { font-size: 0.82rem; }
+  .breakdown-table th, .breakdown-table td { padding: 8px 8px; }
+}
+
+/* Animations */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.results.visible .card {
+  animation: fadeInUp 0.4s ease both;
+}
+.results.visible .card:nth-child(2) { animation-delay: 0.1s; }
+.results.visible .card:nth-child(3) { animation-delay: 0.2s; }
+
+/* DAPS info */
+.daps-warning {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+  padding: 10px 14px;
+  background: #fffbeb;
+  border: 1px solid #fde68a;
+  border-radius: var(--radius-sm);
+  font-size: 0.82rem;
+  color: #92400e;
+  margin-top: 8px;
+}
+.daps-warning .warn-icon {
+  flex-shrink: 0;
+  font-size: 1rem;
+}
+
+/* Comparison box */
+.comparison-box {
+  margin-top: 16px;
+  padding: 14px;
+  background: #f8fafc;
+  border-radius: var(--radius-sm);
+  border: 1px dashed var(--border);
+}
+.comparison-title {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-light);
+  margin-bottom: 8px;
+}
+.comparison-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 0;
+  font-size: 0.85rem;
+}
+.comparison-row .label { color: var(--text-light); }
+.comparison-row .savings {
+  color: var(--primary);
+  font-weight: 700;
+}
+.comparison-row .extra-cost {
+  color: var(--accent);
+  font-weight: 700;
+}
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<div class="header">
+  <div class="header-content">
+    <div class="flag-bar">
+      <span class="flags-g"></span>
+      <span class="flags-w"></span>
+      <span class="flags-r"></span>
+    </div>
+    <h1>🇩🇿 Calculateur de Droits et Taxes à l'Importation</h1>
+    <p class="subtitle">Estimez instantanément le coût total de vos importations en Algérie</p>
+    <span class="update-badge">📋 Mis à jour — Loi de Finances 2025 &amp; Circulaires 2026</span>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- Calculator Form -->
+  <div class="card">
+    <div class="card-title">
+      <span class="icon">📦</span>
+      Informations sur l'importation
+    </div>
+    <div class="form-grid">
+      <div class="form-group">
+        <label>Valeur FOB / Marchandise <span class="required">*</span>
+          <span class="tooltip-trigger" data-tip="Prix de la marchandise hors fret et assurance (FOB) ou valeur transactionnelle">?</span>
+        </label>
+        <input type="number" id="fobValue" placeholder="Ex : 50000" min="0" step="0.01">
+      </div>
+      <div class="form-group">
+        <label>Devise d'origine</label>
+        <select id="currency">
+          <option value="EUR">EUR — Euro</option>
+          <option value="USD">USD — Dollar américain</option>
+          <option value="CNY">CNY — Yuan chinois</option>
+          <option value="GBP">GBP — Livre sterling</option>
+          <option value="TRY">TRY — Livre turque</option>
+          <option value="DZD" selected>DZD — Dinar algérien</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Coût du fret (transport international)
+          <span class="tooltip-trigger" data-tip="Laissez 0 si la valeur est déjà CIF. Le fret sera ajouté pour calculer la valeur CIF.">?</span>
+        </label>
+        <input type="number" id="freight" placeholder="0" min="0" step="0.01" value="0">
+      </div>
+      <div class="form-group">
+        <label>Assurance transport
+          <span class="tooltip-trigger" data-tip="Coût de l'assurance sur le transport international. Laissez 0 si inclus ou non applicable.">?</span>
+        </label>
+        <input type="number" id="insurance" placeholder="0" min="0" step="0.01" value="0">
+      </div>
+      <div class="form-group full">
+        <label>Catégorie de produit (Droits de douane) <span class="required">*</span>
+          <span class="tooltip-trigger" data-tip="Le taux dépend de la position tarifaire (Code SH). Une erreur de classification peut changer le taux de 5% à 60%!">?</span>
+        </label>
+        <select id="ddRate">
+          <option value="0">0% — Exonéré (équipements spécifiques, accords de libre-échange)</option>
+          <option value="5" selected>5% — Matières premières et équipements stratégiques</option>
+          <option value="15">15% — Produits semi-finis</option>
+          <option value="30">30% — Produits de consommation finis</option>
+          <option value="60">60% — Produits de luxe / importations découragées</option>
+        </select>
+      </div>
+      <div class="form-group full">
+        <label>Taux TVA applicable <span class="required">*</span></label>
+        <select id="tvaRate">
+          <option value="19" selected>19% — Taux normal (majorité des produits)</option>
+          <option value="9">9% — Taux réduit (produits alimentaires de base, livres)</option>
+          <option value="0">0% — Exonéré</option>
+        </select>
+      </div>
+      <div class="form-group full">
+        <label>DAPS — Droit Additionnel Provisoire de Sauvegarde
+          <span class="tooltip-trigger" data-tip="Taxe protectionniste (30%-200%) applicable à une liste spécifique de produits (alimentation, électroménager, cosmétiques…). Vérifiez si votre produit est concerné.">?</span>
+        </label>
+        <select id="dapsRate">
+          <option value="0" selected>0% — Non applicable à ce produit</option>
+          <option value="30">30% — Taux minimum DAPS</option>
+          <option value="50">50%</option>
+          <option value="70">70%</option>
+          <option value="100">100%</option>
+          <option value="120">120%</option>
+          <option value="150">150%</option>
+          <option value="200">200% — Taux maximum DAPS</option>
+        </select>
+      </div>
+      <div class="form-group full">
+        <label>Type d'importation
+          <span class="tooltip-trigger" data-tip="La taxe de domiciliation bancaire (TDB) varie selon qu'il s'agit de biens (0,5%) ou de services (4%).">?</span>
+        </label>
+        <select id="importType">
+          <option value="goods" selected>Biens / Marchandises (TDB : 0,5%, min. 20 000 DZD)</option>
+          <option value="services">Services / Immatériel (TDB : 4%)</option>
+          <option value="intangible">Transferts immatériels — Redevances, licences, droits (TDB : 5%)</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="daps-warning" id="dapsWarning" style="display:none;">
+      <span class="warn-icon">⚠️</span>
+      <span>Le DAPS peut atteindre 200% ! Vérifiez la liste officielle des 2 608 produits soumis au DAPS sur <a href="https://www.douane.gov.dz" target="_blank" style="color:var(--accent);text-decoration:underline;">douane.gov.dz</a>. Une mauvaise classification peut multiplier vos coûts par 3.</span>
+    </div>
+
+    <div class="rate-info">
+      <span class="dot-pulse"></span>
+      <span id="rateDisplay">1 EUR = 145,20 DZD | 1 USD = 134,50 DZD | 1 CNY = 18,50 DZD (taux indicatifs)</span>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn btn-primary" onclick="calculate()">🧮 Calculer les droits et taxes</button>
+      <button class="btn btn-secondary" onclick="resetForm()">↺ Réinitialiser</button>
+    </div>
+  </div>
+
+  <!-- Results -->
+  <div class="results" id="results">
+
+    <!-- Summary -->
+    <div class="card">
+      <div class="card-title">
+        <span class="icon">💰</span>
+        Résumé des coûts
+      </div>
+      <div class="result-summary">
+        <div class="summary-item">
+          <div class="label">Valeur CIF (DZD)</div>
+          <div class="value" id="cifDisplay">—</div>
+        </div>
+        <div class="summary-item accent">
+          <div class="label">Total Taxes &amp; Droits</div>
+          <div class="value" id="totalTaxDisplay">—</div>
+        </div>
+        <div class="summary-item gold">
+          <div class="label">Coût Total Import</div>
+          <div class="value" id="totalCostDisplay">—</div>
+        </div>
+      </div>
+      <div style="text-align:center;margin-top:4px;">
+        <span style="font-size:0.82rem;color:var(--text-light);" id="effectiveRateDisplay"></span>
+      </div>
+    </div>
+
+    <!-- Detailed Breakdown -->
+    <div class="card">
+      <div class="card-title">
+        <span class="icon">📊</span>
+        Détail du calcul
+      </div>
+      <table class="breakdown-table">
+        <thead>
+          <tr>
+            <th>Taxe / Droit</th>
+            <th>Assiette</th>
+            <th>Taux</th>
+            <th>Montant (DZD)</th>
+          </tr>
+        </thead>
+        <tbody id="breakdownBody">
+        </tbody>
+      </table>
+
+      <!-- Tax Composition Bar -->
+      <div class="tax-bar">
+        <div class="tax-bar-label">Composition du coût total</div>
+        <div class="bar-container" id="taxBar"></div>
+        <div class="bar-legend" id="barLegend"></div>
+      </div>
+
+      <!-- EUR.1 Comparison -->
+      <div class="comparison-box" id="eur1Box" style="display:none;">
+        <div class="comparison-title">🌐 Économie avec certificat EUR.1 (Accord UE-Algérie)</div>
+        <div class="comparison-row">
+          <span class="label">Droits de douane avec EUR.1</span>
+          <span class="savings" id="eur1Savings">—</span>
+        </div>
+        <div class="comparison-row">
+          <span class="label">TVA avec EUR.1 (base réduite)</span>
+          <span class="savings" id="eur1TvaSavings">—</span>
+        </div>
+        <div class="comparison-row" style="font-weight:700;font-size:0.92rem;border-top:1px solid var(--border);padding-top:8px;margin-top:4px;">
+          <span class="label">Économie totale estimée</span>
+          <span class="savings" id="eur1TotalSavings">—</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pain Points -->
+    <div class="card pain-points">
+      <div class="card-title">
+        <span class="icon">⚡</span>
+        Points de vigilance — Import en Algérie (2025-2026)
+      </div>
+      <ul class="pain-list">
+        <li>
+          <span class="pain-icon">1</span>
+          <span><strong>Risque de classification erronée</strong> — Une erreur de code SH peut faire passer le droit de douane de 5% à 30% ou 60%. Vérifiez toujours la nomenclature à 10 chiffres sur <a href="https://www.commerce.gov.dz/fr/tarif-douanier-10-chiffres" target="_blank" style="color:var(--accent);text-decoration:underline;">commerce.gov.dz</a>.</span>
+        </li>
+        <li>
+          <span class="pain-icon">2</span>
+          <span><strong>DAPS imprévisible</strong> — 2 608 produits sont soumis au DAPS (30%-200%). Cette taxe peut tripler votre coût d'importation. Consultez la liste mise à jour avant de conclure votre achat.</span>
+        </li>
+        <li>
+          <span class="pain-icon">3</span>
+          <span><strong>PPI obligatoire et domiciliation unique</strong> — Le Programme Prévisionnel d'Importation (PPI) doit être domicilié auprès d'une seule banque. Sans PPI approuvé, vos marchandises peuvent être bloquées en douane.</span>
+        </li>
+        <li>
+          <span class="pain-icon">4</span>
+          <span><strong>Retards de dédouanement</strong> — Jusqu'à 15 navires en attente au large en 2025. Les frais de surestaries peuvent atteindre 5 000 $/jour. Prévoyez des marges dans vos délais.</span>
+        </li>
+        <li>
+          <span class="pain-icon">5</span>
+          <span><strong>Extension de la TDB aux flux immatériels (LF 2025)</strong> — La taxe de domiciliation bancaire s'applique désormais aux redevances, licences, droits d'auteur et logiciels spécialisés à un taux de 5%.</span>
+        </li>
+        <li>
+          <span class="pain-icon">6</span>
+          <span><strong>Suppression de la TAP (2024)</strong> — La Taxe sur l'Activité Professionnelle a été supprimée par la Loi de Finances 2024. Assurez-vous que vos calculs et devis ne l'incluent plus.</span>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Tips -->
+    <div class="card tips">
+      <div class="card-title">
+        <span class="icon">💡</span>
+        Conseils pour optimiser vos coûts d'importation
+      </div>
+      <ul class="tips-list">
+        <li>
+          <span class="tip-icon">✓</span>
+          <span><strong>Certificat EUR.1</strong> — Si vous importez depuis l'UE, demandez ce certificat pour bénéficier de 0% de droits de douane et réduire la base TVA.</span>
+        </li>
+        <li>
+          <span class="tip-icon">✓</span>
+          <span><strong>Choisissez bien votre code SH</strong> — Un même produit peut relever de plusieurs positions. Celle avec le taux le plus bas peut vous faire économiser des millions de DZD.</span>
+        </li>
+        <li>
+          <span class="tip-icon">✓</span>
+          <span><strong>Anticipez le PPI</strong> — Préparez votre programme prévisionnel en début d'année pour éviter les blocages administratifs en milieu d'année.</span>
+        </li>
+        <li>
+          <span class="tip-icon">✓</span>
+          <span><strong>Négociez CIF au lieu de FOB</strong> — Maîtriser le fret et l'assurance vous permet de mieux prévoir la valeur CIF et d'éviter les mauvaises surprises de change.</span>
+        </li>
+        <li>
+          <span class="tip-icon">✓</span>
+          <span><strong>TVA à 9% pour les produits éligibles</strong> — Vérifiez si vos produits (alimentation de base, livres) bénéficient du taux réduit de TVA.</span>
+        </li>
+      </ul>
+    </div>
+
+    <!-- CTA / Lead Capture -->
+    <div class="card cta-card">
+      <div class="card-title">
+        <span class="icon">🤝</span>
+        Obtenez un calcul personnalisé et gratuit
+      </div>
+      <p>Vous avez un produit spécifique à importer ? Nos experts vous proposent une estimation détaillée avec le bon code SH et les taux à jour.</p>
+      <div class="form-grid" style="margin-top:16px;">
+        <div class="form-group">
+          <label>Votre nom <span class="required">*</span></label>
+          <input type="text" id="leadName" placeholder="Nom complet">
+        </div>
+        <div class="form-group">
+          <label>Entreprise</label>
+          <input type="text" id="leadCompany" placeholder="Nom de l'entreprise">
+        </div>
+        <div class="form-group">
+          <label>Email <span class="required">*</span></label>
+          <input type="email" id="leadEmail" placeholder="votre@email.com">
+        </div>
+        <div class="form-group">
+          <label>Téléphone / WhatsApp</label>
+          <input type="tel" id="leadPhone" placeholder="+213 ...">
+        </div>
+        <div class="form-group full">
+          <label>Description du produit à importer</label>
+          <input type="text" id="leadProduct" placeholder="Ex : machines industrielles, matériaux de construction, électronique...">
+        </div>
+      </div>
+      <button class="cta-btn" style="margin-top:16px;" onclick="submitLead()">📩 Envoyer ma demande de devis gratuit</button>
+      <p style="font-size:0.75rem;margin-top:10px;opacity:0.7;">Vos données sont protégées et ne seront pas partagées avec des tiers.</p>
+    </div>
+
+    <!-- Lead Success Modal -->
+    <div id="leadModal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);z-index:1000;display:none;align-items:center;justify-content:center;">
+      <div style="background:white;border-radius:16px;padding:32px;max-width:420px;text-align:center;margin:20px;">
+        <div style="font-size:3rem;margin-bottom:12px;">✅</div>
+        <h3 style="margin-bottom:8px;color:var(--primary);">Demande envoyée !</h3>
+        <p style="font-size:0.9rem;color:var(--text-light);margin-bottom:18px;">Notre équipe vous contactera sous 24h avec une estimation personnalisée.</p>
+        <button onclick="closeLeadModal()" style="padding:10px 24px;background:var(--primary);color:white;border:none;border-radius:8px;font-weight:600;cursor:pointer;">Compris</button>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Footer -->
+<div class="footer">
+  <p>Calculateur indicatif basé sur la réglementation algérienne en vigueur (Loi de Finances 2025, Circulaires DGD 2025-2026).</p>
+  <p>Les taux et montants sont fournis à titre informatif uniquement. Consultez un transitaire ou la <a href="https://www.douane.gov.dz" target="_blank">Direction Générale des Douanes</a> pour un calcul officiel.</p>
+  <p style="margin-top:8px;">© 2026 — Tous droits réservés</p>
+</div>
+
+<script>
+// Exchange rates (indicative, updated regularly)
+const rates = {
+  EUR: 145.20,
+  USD: 134.50,
+  CNY: 18.50,
+  GBP: 171.00,
+  TRY: 3.50,
+  DZD: 1
+};
+
+function formatDZD(num) {
+  if (num === 0) return '0,00';
+  return new Intl.NumberFormat('fr-DZ', {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2
+  }).format(num);
+}
+
+function showDapsWarning() {
+  const daps = parseFloat(document.getElementById('dapsRate').value);
+  document.getElementById('dapsWarning').style.display = daps > 0 ? 'flex' : 'none';
+}
+document.getElementById('dapsRate').addEventListener('change', showDapsWarning);
+
+function calculate() {
+  const fobRaw = parseFloat(document.getElementById('fobValue').value);
+  if (!fobRaw || fobRaw <= 0) {
+    alert('Veuillez saisir la valeur de la marchandise.');
+    return;
+  }
+
+  const currency = document.getElementById('currency').value;
+  const freightRaw = parseFloat(document.getElementById('freight').value) || 0;
+  const insuranceRaw = parseFloat(document.getElementById('insurance').value) || 0;
+  const ddRate = parseFloat(document.getElementById('ddRate').value) / 100;
+  const tvaRate = parseFloat(document.getElementById('tvaRate').value) / 100;
+  const dapsRate = parseFloat(document.getElementById('dapsRate').value) / 100;
+  const importType = document.getElementById('importType').value;
+
+  const rate = rates[currency] || 1;
+
+  // Convert to DZD
+  const fobDZD = fobRaw * rate;
+  const freightDZD = freightRaw * rate;
+  const insuranceDZD = insuranceRaw * rate;
+
+  // Step 1: CIF Value
+  const cifDZD = fobDZD + freightDZD + insuranceDZD;
+
+  // Step 2: Customs Duties (DD)
+  const dd = cifDZD * ddRate;
+
+  // Step 3: TCS (Taxe de Contribution de Solidarité) — 2%
+  const tcs = cifDZD * 0.02;
+
+  // Step 4: DAPS (if applicable)
+  const daps = cifDZD * dapsRate;
+
+  // Step 5: Bank Domiciliation Tax (TDB)
+  let tdb = 0;
+  let tdbRateDisplay = '';
+  if (importType === 'goods') {
+    tdb = Math.max(cifDZD * 0.005, 20000);
+    tdbRateDisplay = '0,5% (min. 20 000 DZD)';
+  } else if (importType === 'services') {
+    tdb = cifDZD * 0.04;
+    tdbRateDisplay = '4%';
+  } else {
+    tdb = cifDZD * 0.05;
+    tdbRateDisplay = '5%';
+  }
+
+  // Step 6: VAT Base = CIF + DD + TCS + DAPS
+  const tvaBase = cifDZD + dd + tcs + daps;
+  const tva = tvaBase * tvaRate;
+
+  // Total taxes
+  const totalTax = dd + tcs + daps + tdb + tva;
+
+  // Total cost
+  const totalCost = cifDZD + totalTax;
+
+  // Effective tax rate
+  const effectiveRate = (totalTax / cifDZD) * 100;
+
+  // Update summary
+  document.getElementById('cifDisplay').textContent = formatDZD(cifDZD) + ' DZD';
+  document.getElementById('totalTaxDisplay').textContent = formatDZD(totalTax) + ' DZD';
+  document.getElementById('totalCostDisplay').textContent = formatDZD(totalCost) + ' DZD';
+  document.getElementById('effectiveRateDisplay').textContent =
+    `Taux effectif d'imposition : ${effectiveRate.toFixed(1)}% de la valeur CIF`;
+
+  // Build breakdown table
+  const breakdownBody = document.getElementById('breakdownBody');
+  let rows = '';
+
+  rows += `<tr>
+    <td class="tax-name">Valeur CIF</td>
+    <td class="tax-base">FOB + Fret + Assurance</td>
+    <td class="tax-rate">—</td>
+    <td class="tax-amount">${formatDZD(cifDZD)}</td>
+  </tr>`;
+
+  rows += `<tr>
+    <td class="tax-name">Droits de Douane (DD)</td>
+    <td class="tax-base">CIF × ${(ddRate*100).toFixed(0)}%</td>
+    <td class="tax-rate">${(ddRate*100).toFixed(0)}%</td>
+    <td class="tax-amount">${formatDZD(dd)}</td>
+  </tr>`;
+
+  rows += `<tr>
+    <td class="tax-name">TCS — Taxe de Contribution de Solidarité</td>
+    <td class="tax-base">CIF × 2%</td>
+    <td class="tax-rate">2%</td>
+    <td class="tax-amount">${formatDZD(tcs)}</td>
+  </tr>`;
+
+  if (dapsRate > 0) {
+    rows += `<tr>
+      <td class="tax-name">DAPS — Droit Additionnel Provisoire</td>
+      <td class="tax-base">CIF × ${(dapsRate*100).toFixed(0)}%</td>
+      <td class="tax-rate" style="color:var(--accent);">${(dapsRate*100).toFixed(0)}%</td>
+      <td class="tax-amount" style="color:var(--accent);">${formatDZD(daps)}</td>
+    </tr>`;
+  }
+
+  rows += `<tr>
+    <td class="tax-name">TDB — Taxe de Domiciliation Bancaire</td>
+    <td class="tax-base">${tdbRateDisplay}</td>
+    <td class="tax-rate">${tdbRateDisplay.includes('min') ? '0,5%' : tdbRateDisplay}</td>
+    <td class="tax-amount">${formatDZD(tdb)}</td>
+  </tr>`;
+
+  rows += `<tr>
+    <td class="tax-name">TVA — Taxe sur la Valeur Ajoutée</td>
+    <td class="tax-base">(CIF + DD + TCS${dapsRate > 0 ? ' + DAPS' : ''}) × ${(tvaRate*100).toFixed(0)}%</td>
+    <td class="tax-rate">${(tvaRate*100).toFixed(0)}%</td>
+    <td class="tax-amount">${formatDZD(tva)}</td>
+  </tr>`;
+
+  rows += `<tr class="total-row">
+    <td colspan="3">TOTAL DROITS ET TAXES</td>
+    <td class="tax-amount">${formatDZD(totalTax)}</td>
+  </tr>`;
+
+  rows += `<tr class="total-row" style="background:#fffbea;">
+    <td colspan="3">COÛT TOTAL D'IMPORTATION (CIF + Taxes)</td>
+    <td class="tax-amount" style="color:#92400e;">${formatDZD(totalCost)}</td>
+  </tr>`;
+
+  breakdownBody.innerHTML = rows;
+
+  // Tax composition bar
+  const segments = [
+    { cls: 'bar-cif', label: 'CIF', value: cifDZD, color: '#94a3b8' },
+    { cls: 'bar-dd', label: 'DD', value: dd, color: '#006233' },
+    { cls: 'bar-tcs', label: 'TCS', value: tcs, color: '#3b82f6' },
+  ];
+  if (daps > 0) segments.push({ cls: 'bar-daps', label: 'DAPS', value: daps, color: '#8b5cf6' });
+  segments.push({ cls: 'bar-tdb', label: 'TDB', value: tdb, color: '#f59e0b' });
+  segments.push({ cls: 'bar-tva', label: 'TVA', value: tva, color: '#D21034' });
+
+  const barContainer = document.getElementById('taxBar');
+  const legendContainer = document.getElementById('barLegend');
+
+  let barHTML = '';
+  let legendHTML = '';
+  segments.forEach(seg => {
+    const pct = (seg.value / totalCost) * 100;
+    if (pct > 2) {
+      barHTML += `<div class="bar-segment ${seg.cls}" style="width:${pct}%">${pct >= 8 ? seg.label : ''}</div>`;
+    } else if (pct > 0.5) {
+      barHTML += `<div class="bar-segment ${seg.cls}" style="width:${Math.max(pct, 1.5)}%"></div>`;
+    }
+    legendHTML += `<span><span class="dot" style="background:${seg.color}"></span>${seg.label}</span>`;
+  });
+  barContainer.innerHTML = barHTML;
+  legendContainer.innerHTML = legendHTML;
+
+  // EUR.1 Comparison (only if DD > 0)
+  const eur1Box = document.getElementById('eur1Box');
+  if (ddRate > 0) {
+    eur1Box.style.display = 'block';
+    const ddEur1 = 0; // 0% with EUR.1
+    const tcsEur1 = tcs; // TCS stays same
+    const dapsEur1 = daps; // DAPS stays same
+    const tvaBaseEur1 = cifDZD + ddEur1 + tcsEur1 + dapsEur1;
+    const tvaEur1 = tvaBaseEur1 * tvaRate;
+    const totalTaxEur1 = ddEur1 + tcsEur1 + dapsEur1 + tdb + tvaEur1;
+    const totalCostEur1 = cifDZD + totalTaxEur1;
+
+    const savingsDD = dd;
+    const savingsTVA = tva - tvaEur1;
+    const totalSavings = totalTax - totalTaxEur1;
+
+    document.getElementById('eur1Savings').textContent = `-${formatDZD(savingsDD)} DZD`;
+    document.getElementById('eur1TvaSavings').textContent = `-${formatDZD(savingsTVA)} DZD`;
+    document.getElementById('eur1TotalSavings').textContent = `-${formatDZD(totalSavings)} DZD`;
+  } else {
+    eur1Box.style.display = 'none';
+  }
+
+  // Show results
+  document.getElementById('results').classList.add('visible');
+
+  // Scroll to results
+  setTimeout(() => {
+    document.getElementById('results').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, 100);
+}
+
+function resetForm() {
+  document.getElementById('fobValue').value = '';
+  document.getElementById('freight').value = '0';
+  document.getElementById('insurance').value = '0';
+  document.getElementById('ddRate').value = '5';
+  document.getElementById('tvaRate').value = '19';
+  document.getElementById('dapsRate').value = '0';
+  document.getElementById('importType').value = 'goods';
+  document.getElementById('currency').value = 'DZD';
+  document.getElementById('results').classList.remove('visible');
+  document.getElementById('dapsWarning').style.display = 'none';
+}
+
+function submitLead() {
+  const name = document.getElementById('leadName').value.trim();
+  const email = document.getElementById('leadEmail').value.trim();
+  if (!name || !email) {
+    alert('Veuillez renseigner votre nom et votre email.');
+    return;
+  }
+  // In production, this would POST to your CRM / backend
+  // For now, show success modal and log the lead
+  const leadData = {
+    name: name,
+    company: document.getElementById('leadCompany').value,
+    email: email,
+    phone: document.getElementById('leadPhone').value,
+    product: document.getElementById('leadProduct').value,
+    calculatedCIF: document.getElementById('cifDisplay').textContent,
+    calculatedTax: document.getElementById('totalTaxDisplay').textContent,
+    timestamp: new Date().toISOString()
+  };
+  console.log('📋 Lead captured:', leadData);
+
+  // Show modal
+  const modal = document.getElementById('leadModal');
+  modal.style.display = 'flex';
+}
+
+function closeLeadModal() {
+  document.getElementById('leadModal').style.display = 'none';
+}
+
+// Update rate display on currency change
+document.getElementById('currency').addEventListener('change', function() {
+  // Just visual indicator; rates are built-in
+});
+</script>
+</body>
+</html>
